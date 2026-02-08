@@ -18,29 +18,39 @@
 
 <div class="container" id="listings"></div>
 
-<script src="app.js"></script>
-<script>
-requireLogin();
+<script type="module">
+import {
+  auth, db,
+  onAuthStateChanged,
+  collection,
+  onSnapshot
+} from "./firebase.js";
 
-let listingsData = getData("listings");
-
-listingsData.forEach(item => {
-  let div = document.createElement("div");
-  div.className = "card";
-  div.innerHTML = `
-    <h3>${item.title}</h3>
-    <p>${item.description}</p>
-    <strong>₹${item.price}</strong><br><br>
-    <small>Seller: ${item.seller}</small><br><br>
-    <button onclick="chat('${item.seller}')">Chat</button>
-  `;
-  listings.appendChild(div);
+onAuthStateChanged(auth, user => {
+  if (!user) window.location.href = "login.html";
 });
 
-function chat(seller) {
-  localStorage.setItem("chatWith", seller);
+onSnapshot(collection(db, "listings"), snap => {
+  listings.innerHTML = "";
+  snap.forEach(doc => {
+    let d = doc.data();
+    let div = document.createElement("div");
+    div.className = "card";
+    div.innerHTML = `
+      <h3>${d.title}</h3>
+      <p>${d.description}</p>
+      <strong>₹${d.price}</strong><br><br>
+      <small>${d.email}</small><br><br>
+      <button onclick="startChat('${d.email}')">Chat</button>
+    `;
+    listings.appendChild(div);
+  });
+});
+
+window.startChat = email => {
+  localStorage.setItem("chatWith", email);
   window.location.href = "chat.html";
-}
+};
 </script>
 
 </body>
