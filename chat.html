@@ -7,51 +7,58 @@
 </head>
 <body>
 
-<div class="topbar">
-  <span class="logo">Chat</span>
-  <div class="actions">
-    <a href="index.html">Back</a>
-  </div>
-</div>
+<div class="topbar"><span class="logo">Chat</span></div>
 
 <div class="container">
   <div id="chatBox" class="chat-box"></div>
   <div class="chat-input">
-    <input id="msg" placeholder="Message">
-    <button onclick="send()">Send</button>
+    <input id="msg">
+    <button id="sendBtn">Send</button>
   </div>
 </div>
 
-<script src="app.js"></script>
-<script>
-requireLogin();
+<script type="module">
+import {
+  auth, db,
+  collection,
+  addDoc,
+  query,
+  where,
+  onSnapshot,
+  serverTimestamp
+} from "./firebase.js";
 
-let user = getUser();
 let other = localStorage.getItem("chatWith");
-let messages = getData("messages");
 
-function render() {
-  chatBox.innerHTML = "";
-  messages.filter(m =>
-    (m.from === user.username && m.to === other) ||
-    (m.from === other && m.to === user.username)
-  ).forEach(m => {
-    let d = document.createElement("div");
-    d.className = "msg " + (m.from === user.username ? "me" : "");
-    d.innerText = `${m.from}: ${m.text}`;
-    chatBox.appendChild(d);
+onSnapshot(
+  query(collection(db, "messages"),
+    where("pair", "in", [
+      `${auth.currentUser.email}_${other}`,
+      `${other}_${auth.currentUser.email}`
+    ])
+  ),
+  snap => {
+    chatBox.innerHTML = "";
+    snap.forEach(doc => {
+      let m = doc.data();
+      let d = document.createElement("div");
+      d.className = "msg " + (m.from === auth.currentUser.email ? "me" : "");
+      d.innerText = `${m.from}: ${m.text}`;
+      chatBox.appendChild(d);
+    });
+  }
+);
+
+sendBtn.onclick = async () => {
+  await addDoc(collection(db, "messages"), {
+    from: auth.currentUser.email,
+    to: other,
+    pair: `${auth.currentUser.email}_${other}`,
+    text: msg.value,
+    created: serverTimestamp()
   });
-  chatBox.scrollTop = chatBox.scrollHeight;
-}
-
-function send() {
-  messages.push({ from: user.username, to: other, text: msg.value });
-  setData("messages", messages);
   msg.value = "";
-  render();
-}
-
-render();
+};
 </script>
 
 </body>
