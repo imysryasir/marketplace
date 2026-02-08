@@ -1,0 +1,108 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #f2f2f2;
+  color: #222;
+}
+
+/* TOP BAR */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  border-bottom: 1px solid #ddd;
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 18px;
+  color: #1877f2;
+}
+
+.actions a {
+  margin-left: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  color: #1877f2;
+  font-size: 14px;
+}
+
+/* PAGE */
+.container {
+  padding: 12px;
+}
+
+/* CARDS */
+.card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+/* FORMS */
+input, textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+/* BUTTONS */
+button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: #1877f2;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button.secondary {
+  background: #e4e6eb;
+  color: #222;
+}
+
+/* CHAT */
+.chat-box {
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  height: 60vh;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+
+.msg {
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.msg.me {
+  text-align: right;
+  font-weight: bold;
+}
+
+.chat-input {
+  display: flex;
+  gap: 6px;
+}
+
+.chat-input input {
+  flex: 1;
+}

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Post Listing</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="topbar">
+  <span class="logo">Post Listing</span>
+  <div class="actions">
+    <a href="index.html">Back</a>
+  </div>
+</div>
+
+<div class="container card">
+  <input id="title" placeholder="Title">
+  <textarea id="description" placeholder="Description"></textarea>
+  <input id="price" placeholder="Price">
+  <button onclick="post()">Post</button>
+</div>
+
+<script src="app.js"></script>
+<script>
+requireLogin();
+let user = getUser();
+
+function post() {
+  let listings = getData("listings");
+  listings.push({
+    title: title.value,
+    description: description.value,
+    price: price.value,
+    seller: user.username
+  });
+  setData("listings", listings);
+  alert("Listing posted");
+  window.location.href = "index.html";
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="topbar">
+  <span class="logo">Admin Panel</span>
+  <div class="actions">
+    <a href="dashboard.html">Back</a>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="card">
+    <h3>Users</h3>
+    <div id="users"></div>
+  </div>
+
+  <div class="card">
+    <h3>Listings</h3>
+    <div id="listings"></div>
+  </div>
+
+</div>
+
+<script src="app.js"></script>
+<script>
+requireLogin();
+if (!isAdmin()) {
+  alert("Access denied");
+  window.location.href = "dashboard.html";
+}
+
+let usersData = getData("users");
+let listingsData = getData("listings");
+
+usersData.forEach((u, i) => {
+  let d = document.createElement("div");
+  d.innerHTML = `
+    ${u.username}
+    <button onclick="deleteUser(${i})">Delete</button>
+  `;
+  users.appendChild(d);
+});
+
+listingsData.forEach((l, i) => {
+  let d = document.createElement("div");
+  d.innerHTML = `
+    ${l.title} (${l.seller})
+    <button onclick="deleteListing(${i})">Delete</button>
+  `;
+  listings.appendChild(d);
+});
+
+function deleteUser(i) {
+  if (!confirm("Delete user?")) return;
+  usersData.splice(i, 1);
+  setData("users", usersData);
+  location.reload();
+}
+
+function deleteListing(i) {
+  if (!confirm("Delete listing?")) return;
+  listingsData.splice(i, 1);
+  setData("listings", listingsData);
+  location.reload();
+}
+</script>
+
+</body>
+</html>

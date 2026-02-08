@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Profile</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="topbar">
+  <span class="logo">Profile</span>
+  <div class="actions">
+    <a href="dashboard.html">Back</a>
+  </div>
+</div>
+
+<div class="container card">
+  <input id="photo" placeholder="Profile photo URL">
+  <textarea id="bio" placeholder="Bio"></textarea>
+  <input id="contact" placeholder="Contact info">
+  <button onclick="save()">Save</button>
+</div>
+
+<script src="app.js"></script>
+<script>
+requireLogin();
+
+let users = getData("users");
+let current = getUser();
+let u = users.find(x => x.username === current.username);
+
+photo.value = u.photo;
+bio.value = u.bio;
+contact.value = u.contact;
+
+function save() {
+  u.photo = photo.value;
+  u.bio = bio.value;
+  u.contact = contact.value;
+  setData("users", users);
+  alert("Profile updated");
+}
+</script>
+
+</body>
+</html>

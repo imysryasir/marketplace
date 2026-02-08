@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="topbar">
+  <span class="logo">Chat</span>
+  <div class="actions">
+    <a href="index.html">Back</a>
+  </div>
+</div>
+
+<div class="container">
+  <div id="chatBox" class="chat-box"></div>
+  <div class="chat-input">
+    <input id="msg" placeholder="Message">
+    <button onclick="send()">Send</button>
+  </div>
+</div>
+
+<script src="app.js"></script>
+<script>
+requireLogin();
+
+let user = getUser();
+let other = localStorage.getItem("chatWith");
+let messages = getData("messages");
+
+function render() {
+  chatBox.innerHTML = "";
+  messages.filter(m =>
+    (m.from === user.username && m.to === other) ||
+    (m.from === other && m.to === user.username)
+  ).forEach(m => {
+    let d = document.createElement("div");
+    d.className = "msg " + (m.from === user.username ? "me" : "");
+    d.innerText = `${m.from}: ${m.text}`;
+    chatBox.appendChild(d);
+  });
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function send() {
+  messages.push({ from: user.username, to: other, text: msg.value });
+  setData("messages", messages);
+  msg.value = "";
+  render();
+}
+
+render();
+</script>
+
+</body>
+</html>

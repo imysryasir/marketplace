@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="topbar">
+  <span class="logo">Dashboard</span>
+  <div class="actions">
+    <a href="profile.html">Profile</a>
+    <a href="add.html">Post</a>
+    <a href="admin.html">Admin</a>
+    <a href="#" onclick="logout()">Logout</a>
+  </div>
+</div>
+
+<div class="container card" id="info"></div>
+
+<script src="app.js"></script>
+<script>
+requireLogin();
+let user = getUser();
+info.innerHTML = `<h3>Welcome, ${user.username}</h3>`;
+
+function logout() {
+  localStorage.removeItem("currentUser");
+  window.location.href = "login.html";
+}
+</script>
+
+</body>
+</html>

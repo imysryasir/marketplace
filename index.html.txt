@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Marketplace</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="topbar">
+  <span class="logo">Marketplace</span>
+  <div class="actions">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="add.html">Post</a>
+    <a href="chat.html">Chats</a>
+  </div>
+</div>
+
+<div class="container" id="listings"></div>
+
+<script src="app.js"></script>
+<script>
+requireLogin();
+
+let listingsData = getData("listings");
+
+listingsData.forEach(item => {
+  let div = document.createElement("div");
+  div.className = "card";
+  div.innerHTML = `
+    <h3>${item.title}</h3>
+    <p>${item.description}</p>
+    <strong>₹${item.price}</strong><br><br>
+    <small>Seller: ${item.seller}</small><br><br>
+    <button onclick="chat('${item.seller}')">Chat</button>
+  `;
+  listings.appendChild(div);
+});
+
+function chat(seller) {
+  localStorage.setItem("chatWith", seller);
+  window.location.href = "chat.html";
+}
+</script>
+
+</body>
+</html>
