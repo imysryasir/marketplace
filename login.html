@@ -7,46 +7,32 @@
 </head>
 <body>
 
-<div class="topbar">
-  <span class="logo">Marketplace</span>
-</div>
+<div class="topbar"><span class="logo">Marketplace</span></div>
 
 <div class="container card">
-  <input id="username" placeholder="Username">
+  <input id="email" placeholder="Email">
   <input id="password" type="password" placeholder="Password">
-
-  <button onclick="login()">Login</button>
+  <button id="loginBtn">Login</button>
   <br><br>
-  <button class="secondary" onclick="signup()">Signup</button>
+  <button class="secondary" id="signupBtn">Signup</button>
 </div>
 
-<script src="app.js"></script>
-<script>
-function signup() {
-  let users = getData("users");
-  users.push({
-    username: username.value,
-    password: password.value,
-    bio: "",
-    contact: "",
-    photo: ""
-  });
-  setData("users", users);
-  alert("Signup successful. Login now.");
-}
+<script type="module">
+import {
+  auth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword
+} from "./firebase.js";
 
-function login() {
-  let users = getData("users");
-  let user = users.find(
-    u => u.username === username.value && u.password === password.value
-  );
-  if (user) {
-    localStorage.setItem("currentUser", JSON.stringify(user));
-    window.location.href = "index.html";
-  } else {
-    alert("Invalid credentials");
-  }
-}
+loginBtn.onclick = async () => {
+  await signInWithEmailAndPassword(auth, email.value, password.value);
+  window.location.href = "index.html";
+};
+
+signupBtn.onclick = async () => {
+  await createUserWithEmailAndPassword(auth, email.value, password.value);
+  window.location.href = "index.html";
+};
 </script>
 
 </body>
